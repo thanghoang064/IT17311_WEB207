@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>hello angular</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</head>
+<body ng-app="myapp"> <!-- Định nghĩa khu vực sẽ dùng angular -->
+	<div ng-controller="demoController"><!-- Định nghĩa khu vực sẽ dùng controller -->
+		<h1>{{ welcome }}</h1>
+	</div>
+	<div ng-controller="infoController">
+		<table border="1">
+			<tr>
+				<td>Tên</td>
+				<td>{{ ten }}</td>
+			</tr>
+			<tr>
+				<td>tuoi</td>
+				<td>{{ tuoi }}</td>
+			</tr>
+			<tr>
+				<td>email</td>
+				<td>{{ email }}</td>
+			</tr>
+			<tr>
+				<td>số điện thoại</td>
+				<td>{{ sdt }}</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
