@@ -29,5 +29,18 @@
 			</tr>
 		</table>
 	</div>
+	<div ng-controller="sonDauVangController">
+		<table border="1">
+			<tr>
+				<td>Tên</td>
+				<td>Tuổi</td>
+			</tr>
+			<tr ng-repeat="if in infos">
+				<td>{{ if.ten }}</td>
+				<td>{{ if.tuoi }}</td>
+			</tr>
+
+		</table>
+	</div>
 </body>
 </html>
