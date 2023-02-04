@@ -38,6 +38,15 @@ app.controller("sonDauVangController",function($scope){
 		"ten":"Sơn đầu đen",
 		"tuoi":19
 	}];
+	// tạo ra 1 function 
+	//tạo ra 1  biến count = 0 
+	$scope.count = 0;
+	$scope.myFunc = function() {
+		$scope.count++;
+	}
+	$scope.sayHello = function() {
+		$scope.hihi = $scope.test;
+	}
 });
 // tạo 1 controller mới hiển thị ra dòng bất kì 
 // định nghĩa 1 controller myInfo hiển thị thông tin bản thân mình 
