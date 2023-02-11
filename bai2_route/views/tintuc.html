@@ -16,6 +16,10 @@
             <td>{{ pt.id }}</td>
             <td>{{ pt.tieude }}</td>
             <td>{{ pt.mota }}</td>
+            <td>
+                <button ng-click="onEdit(pt.id)">Sửa</button>
+                <button ng-click="onDelete(pt.id)">Xóa</button>
+            </td>
         </tr>
     </table>
 </div>
