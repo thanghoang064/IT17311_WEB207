@@ -1,9 +1,20 @@
-window.TinTucController = function ($scope) {
+window.TinTucController = function ($scope,$http,$location) {
     // $scope.hihi = "ABC";
-    $scope.danhsachtintuc = [
-        {id:1, tieude:"ABC",mota:"BCD"},
-        {id:2, tieude:"BCD",mota:"EFG"},
-    ];
+    // $scope.danhsachtintuc = [
+    //     {id:1, tieude:"ABC",mota:"BCD"},
+    //     {id:2, tieude:"BCD",mota:"EFG"},
+    // ];
+    //link API khi đón nó về
+    var apiURL = "http://localhost:3000/tintucs";
+    $scope.getData = function() {
+        $http.get(apiURL).then(function (response) {
+            //sau khi đón được dữ liệu về
+            $scope.danhsachtintuc = response.data;
+            // console.log(response.data);
+        })
+
+    }
+    $scope.getData();
     $scope.kiemtradulieu =  {
         tieude:false,
         mota:false
@@ -34,24 +45,50 @@ window.TinTucController = function ($scope) {
                 //nếu như có editID tôi được sửa
                 if (editID) {
                     //xử lý sửa trong này
-                    for (var i = 0;i < $scope.danhsachtintuc.length;i ++ ) {
-                        if ($scope.danhsachtintuc[i].id == editID) {
-                            $scope.danhsachtintuc[i].tieude = $scope.inputValue.tieude;
-                            $scope.danhsachtintuc[i].mota = $scope.inputValue.mota;
+                    // for (var i = 0;i < $scope.danhsachtintuc.length;i ++ ) {
+                    //     if ($scope.danhsachtintuc[i].id == editID) {
+                    //         $scope.danhsachtintuc[i].tieude = $scope.inputValue.tieude;
+                    //         $scope.danhsachtintuc[i].mota = $scope.inputValue.mota;
+                    //     }
+                    // }
+                    var updateItem = {
+                        tieude:$scope.inputValue.tieude,
+                        mota:$scope.inputValue.mota
+                    };
+                    //sửa
+                    $http.put(
+                        `${apiURL}/${editID}`,
+                        updateItem
+                    ).then(
+                        function (response) {
+                            if (response.status == 200) {
+                                $location.path('tin-tuc');
+                                $scope.getData();
+                            }
                         }
-                    }
+                    )
                     $scope.setText();
                     return ;
                 }
                 //thêm mới
-                var ds =$scope.danhsachtintuc;
-                var newId = ds.length > 0 ? ds[ds.length-1].id + 1 : 1;
+                // var ds =$scope.danhsachtintuc;
+                // var newId = ds.length > 0 ? ds[ds.length-1].id + 1 : 1;
                 var newItem = {
-                    id:newId,
+                    // id:newId,
                     tieude : $scope.inputValue.tieude,
                     mota : $scope.inputValue.mota,
                 }
-                $scope.danhsachtintuc.push(newItem);
+                $http.post(
+                    apiURL,//đường dẫn API
+                    newItem // dữ liệu thêm
+                ).then(
+                    function (response) {
+                        // console.log(response);
+                        $location.path('tin-tuc');
+                        $scope.getData();
+                    }
+                )
+                // $scope.danhsachtintuc.push(newItem);
                 $scope.setText();
         }
         //yêu cầu tạo route khách hàng //tạo form khách hàng
@@ -62,22 +99,31 @@ window.TinTucController = function ($scope) {
         //xử lý thêm khách hàng
     }
     $scope.onEdit = function (editId) {
+        $location.path('trang-chu/'+editId);
         $scope.editId = editId;
         var editItem = {
             tieude:"",
             mota:""
         }
-        for(var i = 0;i < $scope.danhsachtintuc.length;i++) {
-            if ($scope.danhsachtintuc[i].id == editId) {
-                editItem.tieude = $scope.danhsachtintuc[i].tieude;
-                editItem.mota = $scope.danhsachtintuc[i].mota;
+        // for(var i = 0;i < $scope.danhsachtintuc.length;i++) {
+        //     if ($scope.danhsachtintuc[i].id == editId) {
+        //         editItem.tieude = $scope.danhsachtintuc[i].tieude;
+        //         editItem.mota = $scope.danhsachtintuc[i].mota;
+        //     }
+        // }
+        $http.get(`${apiURL}/${editId}`).then(
+            function (response) {
+                console.log(response);
+                if (response.status == 200) {
+                    $scope.inputValue = {
+                        tieude: response.data.tieude,
+                        mota: response.data.mota,
+                    }
+                }
             }
-        }
+        )
         //hiển thị lên input bắn dữ liệu lên input
-        $scope.inputValue = {
-            tieude: editItem.tieude,
-            mota: editItem.mota,
-        }
+
 
     }
     $scope.onDelete = function (deleteId) {
